@@ -4,3 +4,6 @@ nbproject
 /backup/*
 /app/*
 /docker-compose.yml
+/Dockerfile
+/etc/mysql/*.cnf
+/etc/environment.yml
