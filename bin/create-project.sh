@@ -8,9 +8,12 @@ set -o errexit   ## set -e : exit the script if any statement returns a non-true
 source "$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )/.config.sh"
 
 if [ "$#" -lt 1 ]; then
-    echo "No project type defined (either cms, neos, symfony or git)"
+    echo "No project type defined (either symfony or git)"
     exit 1
 fi
+
+#if app dir exists then backup it with timestamp
+[ ! -d "$CODE_DIR" ] || mv "$CODE_DIR" "$CODE_DIR".$(date +%Y%m%d%H%M%S);
 
 mkdir -p -- "$CODE_DIR/"
 chmod 777 "$CODE_DIR/"
