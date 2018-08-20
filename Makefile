@@ -64,6 +64,9 @@ restore: mysql-restore solr-restore
 build:
 	bash bin/build.sh
 
+mysql:
+	bash bin/db.sh $(ARGS)
+
 bash: shell
 
 shell:

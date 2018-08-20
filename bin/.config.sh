@@ -54,7 +54,8 @@ execInDir() {
 }
 
 dockerContainerId() {
-    echo "$(docker-compose ps -q "$1" 2> /dev/null || echo "")"
+    # echo "$(docker-compose ps -q "$1" 2> /dev/null || echo "")"
+    echo "$(docker ps -q -f name="$1" 2> /dev/null || echo "")"
 }
 
 dockerExec() {
@@ -62,7 +63,8 @@ dockerExec() {
 }
 
 dockerExecMySQL() {
-    docker exec -i "$(docker-compose ps -q mysql)" "$@"
+    # docker exec -i "$(docker-compose ps -q mysql)" "$@"
+    docker exec -i "$(docker ps -q -f name=dev_mysql)" "$@"
 }
 
 dockerCopyFrom() {
