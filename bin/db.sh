@@ -19,7 +19,7 @@ MYSQL_USER=$(dockerExec printenv MYSQL_USER)
 
 case "$1" in
     "create")
-        if [[ -n "$(dockerContainerId mysql)" ]]; then
+        if [[ -n "$(dockerContainerId dev_mysql)" ]]; then
             logMsg "Create New DB..."
             echo "CREATE DATABASE IF NOT EXISTS ${MYSQL_DATABASE} CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci; \
             GRANT ALL PRIVILEGES ON ${MYSQL_DATABASE}.* TO ${MYSQL_USER}@'%' WITH GRANT OPTION; \
@@ -30,10 +30,20 @@ case "$1" in
             echo " * Skipping, no such container"
         fi
         ;;
-
-    "drop")
-        if [[ -n "$(dockerContainerId mysql)" ]]; then
+    "clean")
+        if [[ -n "$(dockerContainerId dev_mysql)" ]]; then
             logMsg "Cleanup DB..."
+            docker cp "${BACKUP_DIR}/scripts/drop_all_tables.sql" "$(dockerContainerId dev_mysql):/storage/drop_all_tables.sql"
+            dockerExecMySQL sh -c "MYSQL_PWD=\"${MYSQL_ROOT_PASSWORD}\" mysql -h mysql -uroot -D ${MYSQL_DATABASE} < /storage/drop_all_tables.sql"
+            echo "FLUSH PRIVILEGES;" | dockerExecMySQL sh -c "MYSQL_PWD=\"${MYSQL_ROOT_PASSWORD}\" mysql -h mysql -uroot"
+            logMsg "Finished"
+        else
+            echo " * Skipping, no such container"
+        fi
+        ;;
+    "drop")
+        if [[ -n "$(dockerContainerId dev_mysql)" ]]; then
+            logMsg "Dropping DB..."
             echo "DROP DATABASE IF EXISTS ${MYSQL_DATABASE}; \
             REVOKE ALL PRIVILEGES ON ${MYSQL_DATABASE}.* FROM ${MYSQL_USER}@'%'; \
             REVOKE GRANT OPTION ON ${MYSQL_DATABASE}.* FROM ${MYSQL_USER}@'%'; \

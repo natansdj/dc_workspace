@@ -2,6 +2,9 @@
 .idea
 nbproject
 /backup/*
+!/backup/scripts/
+!/backup/.gitkeep
+!/backup/**/.gitkeep
 /app/*
 /docker-compose.yml
 /Dockerfile
