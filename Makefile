@@ -75,6 +75,8 @@ shell:
 root:
 	docker-compose exec --user root app /bin/bash
 
+service:
+	bash bin/start.sh $(ARGS)
 #############################
 # Argument fix workaround
 #############################
