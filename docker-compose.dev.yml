@@ -43,7 +43,7 @@ volumes:
   storage:
     driver: local
     driver_opts:
-      device: /home/vt745/Documents/dc_workspace/backup
+      device: ~/Documents/dc_workspace/backup
       o: bind
 
 networks:
