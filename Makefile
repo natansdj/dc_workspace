@@ -64,6 +64,9 @@ restore: mysql-restore solr-restore
 build:
 	bash bin/build.sh
 
+mysql:
+	bash bin/db.sh $(ARGS)
+
 bash: shell
 
 shell:
@@ -72,6 +75,8 @@ shell:
 root:
 	docker-compose exec --user root app /bin/bash
 
+service:
+	bash bin/start.sh $(ARGS)
 #############################
 # Argument fix workaround
 #############################
