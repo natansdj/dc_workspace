@@ -15,7 +15,8 @@ services:
     extra_hosts:
       - "a407:192.168.43.150"
     networks:
-      - default
+      default:
+        ipv4_address: 172.18.0.20
     volumes:
       - storage:/storage
       - ../_htdocs/net_kpk_portal/:/app/
@@ -42,7 +43,8 @@ services:
       - ../_htdocs/net_kpk_html:/var/www:ro
       - ./etc/nginx-static/default.conf:/etc/nginx/sites-enabled/default.conf
     networks:
-      - default
+      default:
+        ipv4_address: 172.18.0.21
     environment:
       - VIRTUAL_HOST=html.kpk.vm
       - VIRTUAL_PORT=80
