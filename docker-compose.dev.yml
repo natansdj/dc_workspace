@@ -6,21 +6,19 @@ services:
   app:
     build:
       context: .
-      dockerfile: Dockerfile.development
-    image: dev_workspace
-    container_name: dev_workspace
-    external_links:
-#      - dev_mariadb:mariadb
-      - dev_mysql:mysql
+      dockerfile: Dockerfile
+    image: dev_kpk
+    container_name: d_kpk
+    # external_links:
+    #   - dev_mysql:mysql
+    #   - dev_redis:dev_redis
+    extra_hosts:
+      - "a407:192.168.43.150"
     networks:
       - default
-    # ports:
-    #   - "8000:80"
-    #   - "8443:443"
-    #   - "10022:22"
     volumes:
       - storage:/storage
-      - ../_htdocs/dev_workspace/:/app/
+      - ../_htdocs/net_kpk_portal/:/app/
       - ./:/docker/
     # cap and privileged needed for slowlog
     cap_add:
@@ -29,12 +27,25 @@ services:
     env_file:
       - etc/environment.yml
       - etc/environment.development.yml
+    mem_limit: 1000m
     environment:
-      VIRTUAL_HOST: "workspace.vm"
+      VIRTUAL_HOST: "kpk.vm"
       VIRTUAL_PORT: "80"
       # PHP_XDEBUG_ENABLED: 1
-      # PHP_IDE_CONFIG: serverName=workspace.vm
+      # PHP_IDE_CONFIG: serverName=kpk.vm
       # XDEBUG_CONFIG: remote_host=172.18.0.1 remote_connect_back=1
+
+  html:
+    image: jojomi/nginx-static
+    container_name: d_kpk_html
+    volumes:
+      - ../_htdocs/net_kpk_html:/var/www:ro
+      - ./etc/nginx-static/default.conf:/etc/nginx/sites-enabled/default.conf
+    networks:
+      - default
+    environment:
+      - VIRTUAL_HOST=html.kpk.vm
+      - VIRTUAL_PORT=80
 
 #######################################
 # Storage
@@ -43,7 +54,8 @@ volumes:
   storage:
     driver: local
     driver_opts:
-      device: ~/Documents/dc_workspace/backup
+      type: bind
+      device: /home/nath/Documents/dc_kpk/backup
       o: bind
 
 networks:

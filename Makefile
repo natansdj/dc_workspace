@@ -19,7 +19,7 @@ up:
 	docker-compose up -d
 
 start:
-	docker-compose start
+	docker start dev_proxy && docker-compose up -d app
 
 stop:
 	docker-compose stop
