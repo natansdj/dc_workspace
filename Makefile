@@ -18,8 +18,11 @@ create:
 up:
 	docker-compose up -d
 
+startdb:
+	docker start dev_mariadb dev_redis
+
 start:
-	docker start dev_proxy && docker-compose up -d app
+	docker start dev_proxy && docker-compose up -d
 
 stop:
 	docker-compose stop
