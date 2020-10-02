@@ -27,6 +27,9 @@ start:
 stop:
 	docker-compose stop
 
+stopall:
+	docker stop dev_mariadb dev_redis && docker-compose stop
+
 state:
 	docker-compose ps
 
