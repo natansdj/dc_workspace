@@ -18,6 +18,9 @@ create:
 up:
 	docker-compose up -d
 
+stopall:
+	docker start dev_mariadb dev_redis && docker-compose up -d
+
 startdb:
 	docker start dev_mariadb dev_redis
 
