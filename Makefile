@@ -19,10 +19,10 @@ up:
 	docker-compose up -d
 
 start:
-	docker-compose start
+	docker start dev_mysql && docker-compose start
 
 stop:
-	docker-compose stop
+	docker stop dev_mysql && docker-compose stop
 
 state:
 	docker-compose ps
