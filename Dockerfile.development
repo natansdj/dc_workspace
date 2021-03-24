@@ -49,7 +49,7 @@
 #
 #++++++++++++++++++++++++++++++++++++++
 
-FROM webdevops/php-apache-dev:7.1
+FROM webdevops/php-apache-dev:7.4
 
 ENV PROVISION_CONTEXT "development"
 
@@ -60,6 +60,26 @@ RUN ln -sf /opt/docker/etc/cron/crontab /etc/cron.d/docker-boilerplate \
     && chmod 0644 /opt/docker/etc/cron/crontab \
     && echo >> /opt/docker/etc/cron/crontab \
     && ln -sf /opt/docker/etc/php/development.ini /opt/docker/etc/php/php.ini
+
+
+### Add sqlsrv php extension
+# add microsoft packages to apt sources
+RUN curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add -
+RUN curl https://packages.microsoft.com/config/debian/9/prod.list > /etc/apt/sources.list.d/mssql-release.list
+# install needed system packages as well as a few nice to have utils
+RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
+  DEBIAN_FRONTEND=noninteractive apt-get -y upgrade && \
+  ACCEPT_EULA=Y apt-get -y install msodbcsql17 unixodbc-dev less joe iputils-ping traceroute telnet && \
+  apt-get purge -y --auto-remove && \
+  rm -rf /var/lib/apt/lists/*
+# install sqlsrv php extensions
+RUN pecl install sqlsrv pdo_sqlsrv
+# load the pdo extension
+RUN echo extension=pdo_sqlsrv.so >> `php --ini | grep "Scan for additional .ini files" | sed -e "s|.*:\s*||"`/30-pdo_sqlsrv.ini
+# load the mssql extension
+RUN echo extension=sqlsrv.so >> `php --ini | grep "Scan for additional .ini files" | sed -e "s|.*:\s*||"`/20-sqlsrv.ini
+
+
 
 # Configure volume/workdir
 WORKDIR /app/

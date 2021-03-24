@@ -9,11 +9,13 @@ services:
       dockerfile: Dockerfile
     image: dev_kpk
     container_name: d_kpk
-    # external_links:
-    #   - dev_mysql:mysql
-    #   - dev_redis:dev_redis
+    external_links:
+      - dev_mariadb:mariadb
+      - dev_redis
+      - dev_mssql
     extra_hosts:
       - "a407:192.168.43.150"
+      - "kpk.vm:172.18.0.1"
     networks:
       default:
         ipv4_address: 172.18.0.20
@@ -30,18 +32,20 @@ services:
       - etc/environment.development.yml
     mem_limit: 1000m
     environment:
-      VIRTUAL_HOST: "kpk.vm"
+      VIRTUAL_HOST: "kpk.vm, kpk.dev"
       VIRTUAL_PORT: "80"
       # PHP_XDEBUG_ENABLED: 1
       # PHP_IDE_CONFIG: serverName=kpk.vm
       # XDEBUG_CONFIG: remote_host=172.18.0.1 remote_connect_back=1
 
   html:
-    image: jojomi/nginx-static
+    # image: jojomi/nginx-static
+    image: jojomi/lighttpd-static:latest
     container_name: d_kpk_html
     volumes:
       - ../_htdocs/net_kpk_html:/var/www:ro
       - ./etc/nginx-static/default.conf:/etc/nginx/sites-enabled/default.conf
+      - ./etc/nginx-static/lighttpd.conf:/etc/lighttpd/lighttpd.conf
     networks:
       default:
         ipv4_address: 172.18.0.21

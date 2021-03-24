@@ -34,7 +34,7 @@ stopdb:
 	docker stop dev_mariadb dev_redis
 
 stopall:
-	docker stop dev_proxy dev_mariadb dev_redis && docker-compose stop
+	docker stop dev_mariadb dev_redis && docker-compose stop
 
 state:
 	docker-compose ps
