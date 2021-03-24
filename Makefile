@@ -19,7 +19,7 @@ up:
 	docker-compose up -d
 
 startall:
-	docker start dev_mariadb dev_redis && docker-compose up -d
+	docker start dev_proxy dev_mariadb dev_redis && docker-compose up -d
 
 startdb:
 	docker start dev_mariadb dev_redis
@@ -34,7 +34,7 @@ stopdb:
 	docker stop dev_mariadb dev_redis
 
 stopall:
-	docker stop dev_mariadb dev_redis && docker-compose stop
+	docker stop dev_proxy dev_mariadb dev_redis && docker-compose stop
 
 state:
 	docker-compose ps
