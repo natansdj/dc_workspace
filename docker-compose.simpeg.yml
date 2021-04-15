@@ -1,0 +1,25 @@
+version: '3'
+services:
+
+  website:
+    restart: always
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: website-web
+    container_name: website-web
+    volumes:
+      - ./:/var/www/html/simpeg
+    ports:
+      - 8001:80
+    networks:
+      - default
+
+volumes:
+  web:
+  db:
+
+networks:
+  default:
+    external:
+      name: dev
