@@ -19,7 +19,7 @@ up:
 	docker-compose up -d
 
 start:
-	docker-compose start
+	docker start dev_mariadb && docker-compose start jaklingko
 
 stop:
 	docker-compose stop
