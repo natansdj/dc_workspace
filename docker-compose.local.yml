@@ -1,0 +1,217 @@
+version: '2'
+services:
+  #######################################
+  # PHP application Docker container
+  #######################################
+  # app:
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile.development
+  #   image: dev_workspace
+  #   container_name: dev_workspace
+  #   external_links:
+  #     - dev_mysql:mysql
+  #   networks:
+  #     - default
+  #   # ports:
+  #   #   - "8000:80"
+  #   #   - "8443:443"
+  #   #   - "10022:22"
+  #   volumes:
+  #     - storage:/storage
+  #     - ./:/docker/
+  #   # cap and privileged needed for slowlog
+  #   cap_add:
+  #     - SYS_PTRACE
+  #   privileged: true
+  #   env_file:
+  #     - etc/environment.yml
+  #     - etc/environment.development.yml
+  #   environment:
+  #     VIRTUAL_HOST: "workspace.vm"
+  #     VIRTUAL_PORT: "80"
+  #     PHP_XDEBUG_ENABLED: 1
+  #     PHP_IDE_CONFIG: serverName=workspace.vm
+  #     XDEBUG_CONFIG: remote_host=172.18.0.1 remote_connect_back=1
+
+  # sigfox:
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile
+  #   image: dev_workspace74
+  #   container_name: dev_sigfox
+  #   external_links:
+  #     - dev_mariadb:mariadb
+  #   networks:
+  #     default:
+  #       ipv4_address: 172.18.0.70
+  #   volumes:
+  #     - storage:/storage
+  #     - ../_htdocs/net_sigfox/:/app/
+  #     - ./:/docker/
+  #   # cap and privileged needed for slowlog
+  #   cap_add:
+  #     - SYS_PTRACE
+  #   privileged: true
+  #   mem_limit: 1000m
+  #   env_file:
+  #     - etc/environment.yml
+  #     - etc/environment.development.yml
+  #   environment:
+  #     VIRTUAL_HOST: "sigfox.vm"
+  #     VIRTUAL_PORT: "80"
+  #     # PHP_XDEBUG_ENABLED: 1
+  #     # PHP_IDE_CONFIG: serverName=sigfox.vm
+  #     # XDEBUG_CONFIG: remote_host=172.18.0.1 remote_connect_back=1
+
+  jaklingko:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: dev_workspace74
+    container_name: dev_jaklingko
+    external_links:
+      - dev_mariadb:mariadb
+      - dev_redis:redis
+    networks:
+      default:
+        ipv4_address: 172.18.0.71
+    # extra_hosts:
+      # - "jaklingko.vm:172.18.0.1"
+    expose:
+      - "80"
+      - "443"
+      - "1215"
+      - "4200"
+      - "9000"
+      - "9001"
+      - "9003"
+    volumes:
+      - storage:/storage
+      - ../_htdocs/net_jaklingko/:/app/
+      - ./:/docker/
+      - ./etc/php/development.ini:/opt/docker/etc/php/development.ini
+      - ./etc/supervisor.d/jaklingko.conf:/opt/docker/etc/supervisor.d/jaklingko.conf
+    # cap and privileged needed for slowlog
+    cap_add:
+      - SYS_PTRACE
+    privileged: true
+    mem_limit: 1000m
+    env_file:
+      - etc/environment.yml
+      - etc/environment.development.yml
+    environment:
+      VIRTUAL_HOST: "jaklingko.vm"
+      VIRTUAL_PORT: "80"
+      PHP_XDEBUG_ENABLED: 1
+      XDEBUG_SESSION: "PHPSTORM"
+      # XDEBUG_MODE: "debug"
+      PHP_IDE_CONFIG: serverName=jaklingko.vm
+      # XDEBUG_CONFIG: remote_host=172.18.0.1 remote_connect_back=1
+
+  # jak:
+  #   image: jojomi/nginx-static
+  #   container_name: dev_jak
+  #   volumes:
+  #     - ./:/docker/
+  #     - ./etc/nginx-static/default.conf:/etc/nginx/sites-enabled/default.conf
+  #     - ../_htdocs/net_jaklingko_react/build:/var/www:ro
+  #   environment:
+  #     VIRTUAL_HOST: "dev-jaklingko.vm"
+  #     VIRTUAL_PORT: "80"
+  #   mem_limit: 300m
+  #   networks:
+  #     default:
+  #       ipv4_address: 172.18.0.72
+
+  # jakci:
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile
+  #   image: dev_workspace74
+  #   container_name: dev_jakci
+  #   external_links:
+  #     - dev_mariadb:mariadb
+  #   networks:
+  #     default:
+  #       ipv4_address: 172.18.0.73
+  #   volumes:
+  #     - storage:/storage
+  #     - ../_htdocs/net_jaklingko_ci/:/app/
+  #     - ./:/docker/
+  #   # cap and privileged needed for slowlog
+  #   cap_add:
+  #     - SYS_PTRACE
+  #   privileged: true
+  #   mem_limit: 500m
+  #   env_file:
+  #     # - etc/environment.yml
+  #     - etc/environment.development.yml
+  #   environment:
+  #     WEB_DOCUMENT_ROOT: "/app/"
+  #     WEB_DOCUMENT_INDEX: "index.php"
+  #     CLI_SCRIPT: "php /app/index.php"
+  #     VIRTUAL_HOST: "jak.vm"
+  #     VIRTUAL_PORT: "80"
+  #     # PHP_XDEBUG_ENABLED: 1
+  #     # PHP_IDE_CONFIG: serverName=jaklingko.vm
+  #     # XDEBUG_CONFIG: remote_host=172.18.0.1 remote_connect_back=1
+
+  bpn:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: dev_workspace74
+    container_name: dev_bpn
+    external_links:
+      - dev_postgres:postgres
+    networks:
+      default:
+        ipv4_address: 172.18.0.74
+    # extra_hosts:
+      # - "bpn.vm:172.18.0.1"
+    expose:
+      - "80"
+      - "443"
+      - "1215"
+      - "4200"
+      - "9000"
+      - "9001"
+      - "9003"
+    volumes:
+      - storage:/storage
+      - ../_htdocs/net_bpn_anomali/:/app/
+      - ./:/docker/
+      - ./etc/php/development.ini:/opt/docker/etc/php/development.ini
+    # cap and privileged needed for slowlog
+    cap_add:
+      - SYS_PTRACE
+    privileged: true
+    mem_limit: 1000m
+    env_file:
+      - etc/environment.yml
+      - etc/environment.development.yml
+    environment:
+      VIRTUAL_HOST: "bpn.vm"
+      VIRTUAL_PORT: "80"
+      PHP_XDEBUG_ENABLED: 1
+      XDEBUG_SESSION: "PHPSTORM"
+      # XDEBUG_MODE: "debug"
+      PHP_IDE_CONFIG: serverName=bpn.vm
+      # XDEBUG_CONFIG: remote_host=172.18.0.1 remote_connect_back=1
+
+#######################################
+# Storage
+#######################################
+volumes:
+  storage:
+    driver: local
+    driver_opts:
+      type: bind
+      device: /home/nath/Documents/dc_workspace/backup
+      o: bind
+
+networks:
+  default:
+    external:
+      name: dev

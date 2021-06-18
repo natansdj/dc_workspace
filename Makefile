@@ -21,8 +21,11 @@ up:
 start:
 	docker start dev_mariadb && docker-compose start jaklingko
 
+start-bpn:
+	docker start dev_postgres && docker-compose start bpn
+
 stop:
-	docker-compose stop
+	docker stop dev_mariadb dev_postgres && docker-compose stop
 
 state:
 	docker-compose ps
