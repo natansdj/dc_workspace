@@ -158,18 +158,18 @@ services:
   #     # XDEBUG_CONFIG: remote_host=172.18.0.1 remote_connect_back=1
 
   bpn:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    image: dev_workspace74
+    # build:
+    #   context: .
+    #   dockerfile: Dockerfile
+    image: natansdj/php-orcl:7.4
     container_name: dev_bpn
     external_links:
       - dev_postgres:postgres
     networks:
       default:
         ipv4_address: 172.18.0.74
-    # extra_hosts:
-      # - "bpn.vm:172.18.0.1"
+    extra_hosts:
+      - "dc-scan:10.11.20.178"
     expose:
       - "80"
       - "443"
@@ -199,6 +199,45 @@ services:
       # XDEBUG_MODE: "debug"
       PHP_IDE_CONFIG: serverName=bpn.vm
       # XDEBUG_CONFIG: remote_host=172.18.0.1 remote_connect_back=1
+
+  rajamart:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: dev_workspace74
+    container_name: dev_rajamart
+    external_links:
+      - dev_mariadb:mariadb
+    networks:
+      default:
+        ipv4_address: 172.18.0.75
+    expose:
+      - "80"
+      - "443"
+      - "1215"
+      - "4200"
+      - "9000"
+      - "9001"
+      - "9003"
+    volumes:
+      - storage:/storage
+      - ../_htdocs/net_rajamart_api/:/app/
+      - ./:/docker/
+      - ./etc/php/development.ini:/opt/docker/etc/php/development.ini
+    # cap and privileged needed for slowlog
+    cap_add:
+      - SYS_PTRACE
+    privileged: true
+    mem_limit: 1000m
+    env_file:
+      - etc/environment.yml
+      - etc/environment.development.yml
+    environment:
+      VIRTUAL_HOST: "rajamart.vm"
+      VIRTUAL_PORT: "80"
+      PHP_XDEBUG_ENABLED: 1
+      XDEBUG_SESSION: "PHPSTORM"
+      PHP_IDE_CONFIG: serverName=rajamart.vm
 
 #######################################
 # Storage

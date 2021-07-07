@@ -24,8 +24,17 @@ start:
 start-bpn:
 	docker start dev_postgres && docker-compose start bpn
 
+start-rajamart:
+	docker start dev_mariadb && docker-compose start rajamart
+
 stop:
 	docker stop dev_mariadb dev_postgres && docker-compose stop
+
+stop-bpn:
+	docker stop dev_postgres && docker-compose stop bpn
+
+stop-rajamart:
+	docker stop dev_mariadb && docker-compose stop rajamart
 
 state:
 	docker-compose ps
