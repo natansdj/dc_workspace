@@ -24,6 +24,9 @@ start:
 start-bpn:
 	docker start dev_postgres && docker-compose start bpn
 
+start-sigfox:
+	docker start dev_postgres dev_mariadb dev_redis && docker-compose up -d sigfox
+
 start-rajamart:
 	docker start dev_mariadb && docker-compose start rajamart
 
@@ -32,6 +35,9 @@ stop:
 
 stop-bpn:
 	docker stop dev_postgres && docker-compose stop bpn
+
+stop-sigfox:
+	docker stop dev_postgres dev_mariadb dev_redis && docker-compose stop sigfox
 
 stop-rajamart:
 	docker stop dev_mariadb && docker-compose stop rajamart
