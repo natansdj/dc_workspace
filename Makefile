@@ -19,16 +19,19 @@ up:
 	docker-compose up -d
 
 start:
-	docker start dev_mariadb && docker-compose start jaklingko
+	docker start dev_mariadb
 
 start-bpn:
-	docker start dev_postgres && docker-compose start bpn
+	docker start dev_postgres && docker-compose up -d bpn
 
 start-sigfox:
-	docker start dev_postgres dev_mariadb dev_redis && docker-compose up -d sigfox
+	docker start dev_postgis dev_redis && docker-compose up -d sigfox
 
 start-rajamart:
 	docker start dev_mariadb && docker-compose start rajamart
+
+start-pms:
+	docker start dev_mariadb && docker-compose start pms
 
 stop:
 	docker stop dev_mariadb dev_postgres && docker-compose stop
@@ -37,10 +40,13 @@ stop-bpn:
 	docker stop dev_postgres && docker-compose stop bpn
 
 stop-sigfox:
-	docker stop dev_postgres dev_mariadb dev_redis && docker-compose stop sigfox
+	docker stop dev_postgis dev_redis && docker-compose stop sigfox
 
 stop-rajamart:
 	docker stop dev_mariadb && docker-compose stop rajamart
+
+stop-pms:
+	docker stop dev_mariadb && docker-compose stop pms
 
 state:
 	docker-compose ps
