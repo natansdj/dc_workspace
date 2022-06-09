@@ -260,6 +260,7 @@ services:
     container_name: dev_pms
     external_links:
       - dev_mariadb:mariadb
+      - dev_mysql:mysql
     expose:
       - "80"
       # - "443"

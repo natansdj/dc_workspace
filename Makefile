@@ -28,10 +28,10 @@ start-sigfox:
 	docker start dev_postgis dev_redis && docker-compose up -d sigfox
 
 start-rajamart:
-	docker start dev_mariadb && docker-compose start rajamart
+	docker start dev_mariadb && docker-compose up -d rajamart
 
 start-pms:
-	docker start dev_mariadb && docker-compose start pms
+	docker start dev_mariadb dev_mysql && docker-compose up -d pms
 
 stop:
 	docker stop dev_mariadb dev_postgres && docker-compose stop
@@ -46,7 +46,7 @@ stop-rajamart:
 	docker stop dev_mariadb && docker-compose stop rajamart
 
 stop-pms:
-	docker stop dev_mariadb && docker-compose stop pms
+	docker stop dev_mariadb dev_mysql && docker-compose stop pms
 
 state:
 	docker-compose ps
