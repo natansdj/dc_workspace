@@ -300,6 +300,9 @@ services:
       - dev_redis:redis
     extra_hosts:
       - "redis:172.18.0.17"
+    networks:
+      default:
+        ipv4_address: 172.18.0.77
     expose:
       - "80"
       # - "443"
