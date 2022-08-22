@@ -1,0 +1,103 @@
+#++++++++++++++++++++++++++++++++++++++
+# PHP application Docker container
+#++++++++++++++++++++++++++++++++++++++
+#
+# PHP-Versions:
+#  ubuntu-12.04 -> PHP 5.3         (precise)  LTS
+#  ubuntu-14.04 -> PHP 5.5         (trusty)   LTS
+#  ubuntu-15.04 -> PHP 5.6         (vivid)
+#  ubuntu-15.10 -> PHP 5.6         (wily)
+#  ubuntu-16.04 -> PHP 7.0         (xenial)   LTS
+#  centos-7     -> PHP 5.4
+#  debian-7     -> PHP 5.4         (wheezy)
+#  debian-8     -> PHP 5.6 and 7.x (jessie)
+#  debian-9     -> PHP 7.0         (stretch)
+#
+# Apache:
+#   webdevops/php-apache-dev:5.6
+#   webdevops/php-apache-dev:7.0
+#   webdevops/php-apache-dev:7.1
+#   webdevops/php-apache-dev:ubuntu-12.04
+#   webdevops/php-apache-dev:ubuntu-14.04
+#   webdevops/php-apache-dev:ubuntu-15.04
+#   webdevops/php-apache-dev:ubuntu-15.10
+#   webdevops/php-apache-dev:ubuntu-16.04
+#   webdevops/php-apache-dev:centos-7
+#   webdevops/php-apache-dev:debian-7
+#   webdevops/php-apache-dev:debian-8
+#   webdevops/php-apache-dev:debian-8-php7
+#   webdevops/php-apache-dev:debian-9
+#
+# Nginx:
+#   webdevops/php-nginx-dev:5.6
+#   webdevops/php-nginx-dev:7.0
+#   webdevops/php-nginx-dev:7.1
+#   webdevops/php-nginx-dev:ubuntu-12.04
+#   webdevops/php-nginx-dev:ubuntu-14.04
+#   webdevops/php-nginx-dev:ubuntu-15.04
+#   webdevops/php-nginx-dev:ubuntu-15.10
+#   webdevops/php-nginx-dev:ubuntu-16.04
+#   webdevops/php-nginx-dev:centos-7
+#   webdevops/php-nginx-dev:debian-7
+#   webdevops/php-nginx-dev:debian-8
+#   webdevops/php-nginx-dev:debian-8-php7
+#   webdevops/php-nginx-dev:debian-9
+#
+# HHVM:
+#   webdevops/hhvm-apache
+#   webdevops/hhvm-nginx
+#
+#++++++++++++++++++++++++++++++++++++++
+
+FROM webdevops/php-apache-dev:7.4
+
+ENV PROVISION_CONTEXT "development"
+
+# Deploy scripts/configurations
+COPY etc/             /opt/docker/etc/
+
+RUN ln -sf /opt/docker/etc/cron/crontab /etc/cron.d/docker-boilerplate \
+    && chmod 0644 /opt/docker/etc/cron/crontab \
+    && echo >> /opt/docker/etc/cron/crontab \
+    && ln -sf /opt/docker/etc/php/development.ini /opt/docker/etc/php/php.ini
+
+# Oracle instantclient
+COPY oracle/instantclient-basic-linux.x64-12.2.0.1.0.zip /backup/
+COPY oracle/instantclient-sdk-linux.x64-12.2.0.1.0.zip /backup/
+COPY oracle/instantclient-sqlplus-linux.x64-12.2.0.1.0.zip /backup/
+
+# Install Oracle Instantclient
+RUN mkdir /opt/oracle \
+    && cd /opt/oracle \
+    && unzip /backup/instantclient-basic-linux.x64-12.2.0.1.0.zip -d /opt/oracle \
+    && unzip /backup/instantclient-sdk-linux.x64-12.2.0.1.0.zip -d /opt/oracle \
+    && unzip /backup/instantclient-sqlplus-linux.x64-12.2.0.1.0.zip -d /opt/oracle \
+    && ln -s /opt/oracle/instantclient_12_2 /opt/oracle/instantclient \
+    && ln -s /opt/oracle/instantclient_12_2/libclntsh.so.12.1 /opt/oracle/instantclient_12_2/libclntsh.so \
+    && ln -s /opt/oracle/instantclient_12_2/libclntshcore.so.12.1 /opt/oracle/instantclient_12_2/libclntshcore.so \
+    && ln -s /opt/oracle/instantclient_12_2/libocci.so.12.1 /opt/oracle/instantclient_12_2/libocci.so \
+    && ln -s /opt/oracle/instantclient_12_2/sqlplus /usr/bin/sqlplus \
+    && rm -rf /backup/*.zip
+
+ENV LD_LIBRARY_PATH "/opt/oracle/instantclient_12_2:${LD_LIBRARY_PATH}"
+ENV PATH "/opt/oracle/instantclient_12_2:${PATH}"
+ENV TNS_ADMIN "/opt/oracle/instantclient_12_2"
+ENV ORACLE_BASE "/opt/oracle/instantclient_12_2"
+ENV ORACLE_HOME $ORACLE_BASE
+
+# Install Oracle extensions
+RUN apt-get update && apt-get install -y build-essential libaio-dev
+
+RUN pecl install --onlyreqdeps --nobuild oci8-2.2.0 \
+  && cd "$(pecl config-get temp_dir)/oci8" \
+  && phpize \
+  && ./configure --with-oci8=instantclient,/opt/oracle/instantclient_12_2 \
+  && make && make install \
+  && docker-php-ext-enable oci8
+
+# install & enable pdo-oci
+RUN docker-php-ext-configure pdo_oci --with-pdo-oci=instantclient,/opt/oracle/instantclient_12_2,12.2 \
+    && docker-php-ext-install pdo_oci
+
+# Configure volume/workdir
+WORKDIR /app/

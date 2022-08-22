@@ -11,3 +11,4 @@ nbproject
 /etc/mysql/*.cnf
 /etc/environment.yml
 /bin/.services.sh
+oracle/
