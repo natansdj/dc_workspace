@@ -9,17 +9,17 @@ services:
   #     dockerfile: Dockerfile.development
   #   image: dev_workspace
   #   container_name: dev_workspace
-  #   external_links:
-  #     - dev_mysql:mysql
-  #   networks:
-  #     - default
+  #   # external_links:
+  #   #   - dev_mysql:mysql
   #   # ports:
   #   #   - "8000:80"
   #   #   - "8443:443"
   #   #   - "10022:22"
   #   volumes:
-  #     - storage:/storage
+  #     # - storage:/storage
   #     - ./:/docker/
+  #     - ../_htdocs_ddc/ddc_api:/app/
+  #     - ./etc/php/development.ini:/opt/docker/etc/php/development.ini
   #   # cap and privileged needed for slowlog
   #   cap_add:
   #     - SYS_PTRACE
@@ -31,8 +31,12 @@ services:
   #     VIRTUAL_HOST: "workspace.vm"
   #     VIRTUAL_PORT: "80"
   #     PHP_XDEBUG_ENABLED: 1
+  #     XDEBUG_SESSION: "PHPSTORM"
   #     PHP_IDE_CONFIG: serverName=workspace.vm
   #     XDEBUG_CONFIG: remote_host=172.18.0.1 remote_connect_back=1
+  #   networks:
+  #     default:
+  #       ipv4_address: 172.18.0.70
 
   # jaklingko:
   #   build:
@@ -61,7 +65,7 @@ services:
   #     - ../_htdocs/net_jaklingko/:/app/
   #     - ./:/docker/
   #     - ./etc/php/development.ini:/opt/docker/etc/php/development.ini
-  #     - ./etc/supervisor.d/jaklingko.conf:/opt/docker/etc/supervisor.d/jaklingko.conf
+  #     - ./conf/supervisor.d/jaklingko.conf:/opt/docker/etc/supervisor.d/jaklingko.conf
   #   # cap and privileged needed for slowlog
   #   cap_add:
   #     - SYS_PTRACE
@@ -236,7 +240,7 @@ services:
   #     - ../_htdocs/net_sigfox_dev/:/app/
   #     - ./:/docker/
   #     - ./etc/php/development.ini:/opt/docker/etc/php/development.ini
-  #     # - ./etc/supervisor.d/sigfox.conf:/opt/docker/etc/supervisor.d/sigfox.conf
+  #     # - ./conf/supervisor.d/sigfox.conf:/opt/docker/etc/supervisor.d/sigfox.conf
   #   # cap and privileged needed for slowlog
   #   cap_add:
   #     - SYS_PTRACE
@@ -292,12 +296,13 @@ services:
   bpn_queue:
     build:
       context: .
-      dockerfile: Dockerfile
-    image: dev_workspace74
+      dockerfile: Dockerfile74_oracle
+    image: dev_workspace74_orcl
     container_name: dev_bpn_queue
     external_links:
       - dev_mariadb:mariadb
       - dev_redis:redis
+      - dev_oracle:oracle
     extra_hosts:
       - "redis:172.18.0.17"
     networks:
@@ -316,7 +321,7 @@ services:
       - ../_htdocs/net_bpn_queue_api/:/app/
       - ./:/docker/
       - ./etc/php/development.ini:/opt/docker/etc/php/development.ini
-      - ./etc/supervisor.d/bpn_queue.conf:/opt/docker/etc/supervisor.d/bpn_queue.conf
+      - ./conf/supervisor.d/bpn_queue.conf:/opt/docker/etc/supervisor.d/bpn_queue.conf
     # cap and privileged needed for slowlog
     cap_add:
       - SYS_PTRACE
