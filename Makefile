@@ -30,11 +30,14 @@ start-sigfox:
 start-rajamart:
 	docker start dev_mariadb && docker-compose up -d rajamart
 
+start-rajamart:
+	docker start dev_mariadb && docker-compose up -d agregator
+
 start-pms:
 	docker start dev_mariadb dev_mysql && docker-compose up -d pms
 
 start-bpn_queue:
-	docker start dev_mariadb dev_redis && docker-compose up -d bpn_queue
+	docker start dev_mariadb dev_redis dev_postgres && docker-compose up -d bpn_queue
 
 stop:
 	docker stop dev_mariadb dev_postgres && docker-compose stop
@@ -48,11 +51,14 @@ stop-sigfox:
 stop-rajamart:
 	docker stop dev_mariadb && docker-compose stop rajamart
 
+stop-agregator:
+	docker stop dev_mariadb && docker-compose stop agregator
+
 stop-pms:
 	docker stop dev_mariadb dev_mysql && docker-compose stop pms
 
 stop-bpn_queue:
-	docker stop dev_mariadb dev_redis && docker-compose stop bpn_queue
+	docker stop dev_mariadb dev_redis dev_postgres && docker-compose stop bpn_queue
 
 state:
 	docker-compose ps
