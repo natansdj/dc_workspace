@@ -30,7 +30,7 @@ start-sigfox:
 start-rajamart:
 	docker start dev_mariadb && docker-compose up -d rajamart
 
-start-rajamart:
+start-agregator:
 	docker start dev_mariadb && docker-compose up -d agregator
 
 start-pms:
