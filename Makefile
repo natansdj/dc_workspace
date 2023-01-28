@@ -37,7 +37,7 @@ start-pms:
 	docker start dev_mariadb dev_mysql && docker-compose up -d pms
 
 start-bpn_queue:
-	docker start dev_mariadb dev_redis dev_postgres && docker-compose up -d bpn_queue
+	docker start dev_mariadb dev_redis dev_postgres && docker-compose up -d bpn_queue bpn_queue_fe
 
 stop:
 	docker stop dev_mariadb dev_postgres && docker-compose stop
@@ -58,7 +58,7 @@ stop-pms:
 	docker stop dev_mariadb dev_mysql && docker-compose stop pms
 
 stop-bpn_queue:
-	docker stop dev_mariadb dev_redis dev_postgres && docker-compose stop bpn_queue
+	docker stop dev_mariadb dev_redis dev_postgres && docker-compose stop bpn_queue bpn_queue_fe
 
 state:
 	docker-compose ps
