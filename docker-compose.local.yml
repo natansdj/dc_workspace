@@ -389,6 +389,7 @@ services:
     extra_hosts:
       - "redis:172.18.0.17"
       - "bpn_queue:172.18.0.77"
+      - "bpn_queue.vm:172.18.0.77"
     networks:
       default:
         ipv4_address: 172.18.0.77
@@ -402,7 +403,7 @@ services:
       - "9003"
       - "6001"
     ports:
-      - "16001:6001"
+      - "6001:6001"
     volumes:
       - storage:/storage
       - ../_htdocs/net_bpn_queue_api/:/app/
