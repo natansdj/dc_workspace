@@ -34,7 +34,7 @@ start-agregator:
 	docker start dev_mariadb && docker-compose up -d agregator
 
 start-pms:
-	docker start dev_mariadb dev_mysql && docker-compose up -d pms
+	docker start dev_mariadb dev_mailhog && docker-compose up -d pms
 
 start-bpn_queue:
 	docker start dev_mariadb dev_redis dev_postgres && docker-compose up -d bpn_queue bpn_queue_fe
@@ -55,7 +55,7 @@ stop-agregator:
 	docker stop dev_mariadb && docker-compose stop agregator
 
 stop-pms:
-	docker stop dev_mariadb dev_mysql && docker-compose stop pms
+	docker stop dev_mariadb dev_mailhog && docker-compose stop pms
 
 stop-bpn_queue:
 	docker stop dev_mariadb dev_redis dev_postgres && docker-compose stop bpn_queue bpn_queue_fe
