@@ -227,6 +227,9 @@ services:
     container_name: dev_agregator
     external_links:
       - dev_mariadb:mariadb
+      - dev_redis:redis
+    extra_hosts:
+      - "redis:172.18.0.17"
     expose:
       - "80"
       - "9000"
@@ -261,6 +264,9 @@ services:
     container_name: dev_cazgo
     external_links:
       - dev_mariadb:mariadb
+      - dev_redis:redis
+    extra_hosts:
+      - "redis:172.18.0.17"
     expose:
       - "80"
       - "9000"

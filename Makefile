@@ -31,10 +31,10 @@ start-rajamart:
 	docker start dev_mariadb dev_redis && docker-compose up -d rajamart
 
 start-agregator:
-	docker start dev_mariadb && docker-compose up -d agregator
+	docker start dev_mariadb dev_redis && docker-compose up -d agregator
 
 start-cazgo:
-	docker start dev_mariadb && docker-compose up -d cazgo
+	docker start dev_mariadb dev_redis dev_mailhog && docker-compose up -d cazgo
 
 start-pms:
 	docker start dev_mysql dev_mariadb dev_mailhog && docker-compose up -d pms
@@ -55,10 +55,10 @@ stop-rajamart:
 	docker stop dev_mariadb dev_redis && docker-compose stop rajamart
 
 stop-agregator:
-	docker stop dev_mariadb && docker-compose stop agregator
+	docker stop dev_mariadb dev_redis && docker-compose stop agregator
 
 stop-cazgo:
-	docker stop dev_mariadb && docker-compose stop cazgo
+	docker stop dev_mariadb dev_redis dev_mailhog && docker-compose stop cazgo
 
 stop-pms:
 	docker stop dev_mysql dev_mariadb dev_mailhog && docker-compose stop pms
