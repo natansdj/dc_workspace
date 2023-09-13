@@ -21,7 +21,7 @@ services:
     volumes:
       # - storage:/storage
       - ./:/docker/
-      - ../_htdocs/net_bpn_php_sample:/app/public/
+      - ../_htdocs_gh/laravel_breeze:/app/
       - ./etc/php/development.ini:/opt/docker/etc/php/development.ini
     # cap and privileged needed for slowlog
     cap_add:
@@ -230,6 +230,9 @@ services:
       - dev_redis:redis
     extra_hosts:
       - "redis:172.18.0.17"
+    networks:
+      default:
+        ipv4_address: 172.18.0.76
     expose:
       - "80"
       - "9000"
@@ -267,6 +270,9 @@ services:
       - dev_redis:redis
     extra_hosts:
       - "redis:172.18.0.17"
+    networks:
+      default:
+        ipv4_address: 172.18.0.77
     expose:
       - "80"
       - "9000"
