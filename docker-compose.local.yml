@@ -380,6 +380,18 @@ services:
       XDEBUG_SESSION: "PHPSTORM"
       PHP_IDE_CONFIG: serverName=pms.vm
 
+  pms_fe:
+    image: jojomi/nginx-static
+    container_name: dev_pms_fe
+    volumes:
+      - ./:/docker/
+      - ./etc/nginx-static/default.conf:/etc/nginx/sites-enabled/default.conf
+      - ../_htdocs/net_pms_web/build:/var/www:ro
+    environment:
+      VIRTUAL_HOST: "pms_web.vm"
+      VIRTUAL_PORT: "80"
+    mem_limit: 300m
+
   bpn_queue_fe:
     build:
       context: .
