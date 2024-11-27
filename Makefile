@@ -34,7 +34,7 @@ start-agregator:
 	docker start dev_mariadb dev_redis && docker-compose up -d agregator
 
 start-cazgo:
-	docker start dev_mariadb dev_redis dev_mailhog && docker-compose up -d cazgo
+	docker start dev_mariadb dev_redis dev_mailhog && docker-compose up -d cazgo cazgo_fe
 
 start-pms:
 	docker start dev_mysql dev_mariadb dev_mailhog && docker-compose up -d pms
