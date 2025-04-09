@@ -58,7 +58,7 @@ stop-agregator:
 	docker stop dev_mariadb dev_redis && docker-compose stop agregator
 
 stop-cazgo:
-	docker stop dev_mariadb dev_redis dev_mailhog && docker-compose stop cazgo
+	docker stop dev_mariadb dev_redis dev_mailhog && docker-compose stop cazgo cazgo_fe
 
 stop-pms:
 	docker stop dev_mysql dev_mariadb dev_mailhog && docker-compose stop pms
