@@ -34,13 +34,16 @@ start-agregator:
 	docker start dev_mariadb dev_redis && docker-compose up -d agregator
 
 start-cazgo:
-	docker start dev_mariadb dev_redis dev_mailhog && docker-compose up -d cazgo cazgo_fe
+	docker start dev_mariadb dev_redis dev_mailhog && docker-compose up -d cazgo
 
 start-pms:
 	docker start dev_mysql dev_mariadb dev_mailhog && docker-compose up -d pms
 
 start-bpn_queue:
 	docker start dev_mariadb dev_redis dev_postgres && docker-compose up -d bpn_queue
+
+start-ahu:
+	docker start dev_mariadb dev_redis && docker-compose up -d ahu
 
 stop:
 	docker stop dev_mariadb dev_postgres && docker-compose stop
@@ -58,13 +61,16 @@ stop-agregator:
 	docker stop dev_mariadb dev_redis && docker-compose stop agregator
 
 stop-cazgo:
-	docker stop dev_mariadb dev_redis dev_mailhog && docker-compose stop cazgo cazgo_fe
+	docker stop dev_mariadb dev_redis dev_mailhog && docker-compose stop cazgo
 
 stop-pms:
 	docker stop dev_mysql dev_mariadb dev_mailhog && docker-compose stop pms
 
 stop-bpn_queue:
 	docker stop dev_mariadb dev_redis dev_postgres && docker-compose stop bpn_queue
+
+stop-ahu:
+	docker stop dev_mariadb dev_redis && docker-compose stop ahu
 
 state:
 	docker-compose ps

@@ -177,87 +177,87 @@ services:
   #     PHP_IDE_CONFIG: serverName=bpn.vm
   #     # XDEBUG_CONFIG: remote_host=172.18.0.1 remote_connect_back=1
 
-  rajamart:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    image: dev_workspace74
-    container_name: dev_rajamart
-    external_links:
-      - dev_mariadb:mariadb
-      - dev_redis:redis
-    extra_hosts:
-      - "redis:172.18.0.17"
-      - "rajamart:172.18.0.75"
-      - "rajamart.vm:172.18.0.75"
-    networks:
-      default:
-        ipv4_address: 172.18.0.75
-    expose:
-      - "80"
-      - "9000"
-      - "9001"
-      - "9003"
-    volumes:
-      - storage:/storage
-      - ../_htdocs/net_rajamart_api/:/app/
-      - ./:/docker/
-      - ./etc/php/development.ini:/opt/docker/etc/php/development.ini
-      - ./conf/supervisor.d/rajamart.conf:/opt/docker/etc/supervisor.d/rajamart.conf
-    # cap and privileged needed for slowlog
-    cap_add:
-      - SYS_PTRACE
-    privileged: true
-    mem_limit: 1000m
-    env_file:
-      - etc/environment.yml
-      - etc/environment.development.yml
-    environment:
-      VIRTUAL_HOST: "rajamart.vm"
-      VIRTUAL_PORT: "80"
-      PHP_XDEBUG_ENABLED: 1
-      XDEBUG_SESSION: "PHPSTORM"
-      PHP_IDE_CONFIG: serverName=rajamart.vm
+  # rajamart:
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile
+  #   image: dev_workspace74
+  #   container_name: dev_rajamart
+  #   external_links:
+  #     - dev_mariadb:mariadb
+  #     - dev_redis:redis
+  #   extra_hosts:
+  #     - "redis:172.18.0.17"
+  #     - "rajamart:172.18.0.75"
+  #     - "rajamart.vm:172.18.0.75"
+  #   networks:
+  #     default:
+  #       ipv4_address: 172.18.0.75
+  #   expose:
+  #     - "80"
+  #     - "9000"
+  #     - "9001"
+  #     - "9003"
+  #   volumes:
+  #     - storage:/storage
+  #     - ../_htdocs/net_rajamart_api/:/app/
+  #     - ./:/docker/
+  #     - ./etc/php/development.ini:/opt/docker/etc/php/development.ini
+  #     - ./conf/supervisor.d/rajamart.conf:/opt/docker/etc/supervisor.d/rajamart.conf
+  #   # cap and privileged needed for slowlog
+  #   cap_add:
+  #     - SYS_PTRACE
+  #   privileged: true
+  #   mem_limit: 1000m
+  #   env_file:
+  #     - etc/environment.yml
+  #     - etc/environment.development.yml
+  #   environment:
+  #     VIRTUAL_HOST: "rajamart.vm"
+  #     VIRTUAL_PORT: "80"
+  #     PHP_XDEBUG_ENABLED: 1
+  #     XDEBUG_SESSION: "PHPSTORM"
+  #     PHP_IDE_CONFIG: serverName=rajamart.vm
 
-  agregator:
-    build:
-      context: .
-      dockerfile: Dockerfile81
-    image: dev_workspace81
-    container_name: dev_agregator
-    external_links:
-      - dev_mariadb:mariadb
-      - dev_redis:redis
-    extra_hosts:
-      - "redis:172.18.0.17"
-    networks:
-      default:
-        ipv4_address: 172.18.0.76
-    expose:
-      - "80"
-      - "9000"
-      - "9001"
-      - "9003"
-    volumes:
-      - storage:/storage
-      - ../_htdocs/net_agregator_api/:/app/
-      - ./:/docker/
-      - ./etc/php/development.ini:/opt/docker/etc/php/development.ini
-      - ./conf/supervisor.d/agregator.conf:/opt/docker/etc/supervisor.d/agregator.conf
-    # cap and privileged needed for slowlog
-    cap_add:
-      - SYS_PTRACE
-    privileged: true
-    mem_limit: 1000m
-    env_file:
-      - etc/environment.yml
-      - etc/environment.development.yml
-    environment:
-      VIRTUAL_HOST: "agregator.vm"
-      VIRTUAL_PORT: "80"
-      PHP_XDEBUG_ENABLED: 1
-      XDEBUG_SESSION: "PHPSTORM"
-      PHP_IDE_CONFIG: serverName=agregator.vm
+  # agregator:
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile81
+  #   image: dev_workspace81
+  #   container_name: dev_agregator
+  #   external_links:
+  #     - dev_mariadb:mariadb
+  #     - dev_redis:redis
+  #   extra_hosts:
+  #     - "redis:172.18.0.17"
+  #   networks:
+  #     default:
+  #       ipv4_address: 172.18.0.76
+  #   expose:
+  #     - "80"
+  #     - "9000"
+  #     - "9001"
+  #     - "9003"
+  #   volumes:
+  #     - storage:/storage
+  #     - ../_htdocs/net_agregator_api/:/app/
+  #     - ./:/docker/
+  #     - ./etc/php/development.ini:/opt/docker/etc/php/development.ini
+  #     - ./conf/supervisor.d/agregator.conf:/opt/docker/etc/supervisor.d/agregator.conf
+  #   # cap and privileged needed for slowlog
+  #   cap_add:
+  #     - SYS_PTRACE
+  #   privileged: true
+  #   mem_limit: 1000m
+  #   env_file:
+  #     - etc/environment.yml
+  #     - etc/environment.development.yml
+  #   environment:
+  #     VIRTUAL_HOST: "agregator.vm"
+  #     VIRTUAL_PORT: "80"
+  #     PHP_XDEBUG_ENABLED: 1
+  #     XDEBUG_SESSION: "PHPSTORM"
+  #     PHP_IDE_CONFIG: serverName=agregator.vm
 
   cazgo:
     build:
@@ -299,17 +299,17 @@ services:
       XDEBUG_SESSION: "PHPSTORM"
       PHP_IDE_CONFIG: serverName=cazgo.vm
 
-  cazgo_fe:
-    image: jojomi/nginx-static
-    container_name: dev_cazgo_fe
-    volumes:
-      - ./:/docker/
-      - ./etc/nginx-static/default.conf:/etc/nginx/sites-enabled/default.conf
-      - ../_htdocs/net_cazgo_panel/build:/var/www:ro
-    environment:
-      VIRTUAL_HOST: "cazgo_admin.vm"
-      VIRTUAL_PORT: "80"
-    mem_limit: 300m
+  # cazgo_fe:
+  #   image: jojomi/nginx-static
+  #   container_name: dev_cazgo_fe
+  #   volumes:
+  #     - ./:/docker/
+  #     - ./etc/nginx-static/default.conf:/etc/nginx/sites-enabled/default.conf
+  #     - ../_htdocs/net_cazgo_admin/dist:/var/www:ro
+  #   environment:
+  #     VIRTUAL_HOST: "cazgo_admin.vm"
+  #     VIRTUAL_PORT: "80"
+  #   mem_limit: 300m
 
   # sigfox:
   #   build:
@@ -392,58 +392,58 @@ services:
       XDEBUG_SESSION: "PHPSTORM"
       PHP_IDE_CONFIG: serverName=pms.vm
 
-  pms_fe:
-    image: jojomi/nginx-static
-    container_name: dev_pms_fe
-    volumes:
-      - ./:/docker/
-      - ./etc/nginx-static/default.conf:/etc/nginx/sites-enabled/default.conf
-      - ../_htdocs/net_pms_web/build:/var/www:ro
-    environment:
-      VIRTUAL_HOST: "pms_web.vm"
-      VIRTUAL_PORT: "80"
-    mem_limit: 300m
+  # pms_fe:
+  #   image: jojomi/nginx-static
+  #   container_name: dev_pms_fe
+  #   volumes:
+  #     - ./:/docker/
+  #     - ./etc/nginx-static/default.conf:/etc/nginx/sites-enabled/default.conf
+  #     - ../_htdocs/net_pms_web/build:/var/www:ro
+  #   environment:
+  #     VIRTUAL_HOST: "pms_web.vm"
+  #     VIRTUAL_PORT: "80"
+  #   mem_limit: 300m
 
-  bpn_queue_fe:
-    build:
-      context: .
-      dockerfile: Dockerfile74
-    image: dev_workspace74
-    container_name: dev_bpn_queue_fe
-    external_links:
-      - dev_redis:redis
-      - dev_bpn_queue:bpn_queue
-    extra_hosts:
-      - "redis:172.18.0.17"
-      - "bpn_queue:172.18.0.77"
-    networks:
-      default:
-        ipv4_address: 172.18.0.78
-    expose:
-      - "80"
-      - "9000"
-      - "9001"
-      - "9003"
-      - "6001"
-    volumes:
-      - storage:/storage
-      - ../_htdocs/net_bpn_queue_fe/:/app/
-      - ./:/docker/
-      - ./etc/php/development.ini:/opt/docker/etc/php/development.ini
-    # cap and privileged needed for slowlog
-    cap_add:
-      - SYS_PTRACE
-    privileged: true
-    mem_limit: 1000m
-    env_file:
-      - etc/environment.yml
-      - etc/environment.development.yml
-    environment:
-      VIRTUAL_HOST: "bpn_queue_fe.vm"
-      VIRTUAL_PORT: "80"
-      PHP_XDEBUG_ENABLED: 1
-      XDEBUG_SESSION: "PHPSTORM"
-      PHP_IDE_CONFIG: serverName=bpn_queue_fe.vm
+  # bpn_queue_fe:
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile74
+  #   image: dev_workspace74
+  #   container_name: dev_bpn_queue_fe
+  #   external_links:
+  #     - dev_redis:redis
+  #     - dev_bpn_queue:bpn_queue
+  #   extra_hosts:
+  #     - "redis:172.18.0.17"
+  #     - "bpn_queue:172.18.0.77"
+  #   networks:
+  #     default:
+  #       ipv4_address: 172.18.0.78
+  #   expose:
+  #     - "80"
+  #     - "9000"
+  #     - "9001"
+  #     - "9003"
+  #     - "6001"
+  #   volumes:
+  #     - storage:/storage
+  #     - ../_htdocs/net_bpn_queue_fe/:/app/
+  #     - ./:/docker/
+  #     - ./etc/php/development.ini:/opt/docker/etc/php/development.ini
+  #   # cap and privileged needed for slowlog
+  #   cap_add:
+  #     - SYS_PTRACE
+  #   privileged: true
+  #   mem_limit: 1000m
+  #   env_file:
+  #     - etc/environment.yml
+  #     - etc/environment.development.yml
+  #   environment:
+  #     VIRTUAL_HOST: "bpn_queue_fe.vm"
+  #     VIRTUAL_PORT: "80"
+  #     PHP_XDEBUG_ENABLED: 1
+  #     XDEBUG_SESSION: "PHPSTORM"
+  #     PHP_IDE_CONFIG: serverName=bpn_queue_fe.vm
 
   bpn_queue:
     build:
@@ -539,6 +539,53 @@ services:
       XDEBUG_SESSION: "PHPSTORM"
       PHP_IDE_CONFIG: serverName=test.vm
 
+  ahu:
+    build:
+      context: .
+      dockerfile: Dockerfile84
+    image: dev_workspace84
+    container_name: dev_ahu
+    external_links:
+      - dev_mariadb:mariadb
+      - dev_redis:redis
+    extra_hosts:
+      - "redis:172.18.0.17"
+      - "ahu:172.18.0.79"
+      - "ahu.vm:172.18.0.79"
+    networks:
+      default:
+        ipv4_address: 172.18.0.79
+    expose:
+      - "80"
+      # - "443"
+      # - "1215"
+      # - "4200"
+      - "9000"
+      - "9001"
+      - "9003"
+      - "6001"
+    ports:
+      - "6001:6001"
+    volumes:
+      - storage:/storage
+      - ../_htdocs/net_ahu_api/:/app/
+      - ./:/docker/
+      - ./etc/php/development.ini:/opt/docker/etc/php/development.ini
+      - ./conf/supervisor.d/bpn_queue.conf:/opt/docker/etc/supervisor.d/bpn_queue.conf
+    # cap and privileged needed for slowlog
+    cap_add:
+      - SYS_PTRACE
+    privileged: true
+    mem_limit: 1000m
+    env_file:
+      - etc/environment.yml
+      - etc/environment.development.yml
+    environment:
+      VIRTUAL_HOST: "ahu.vm"
+      VIRTUAL_PORT: "80"
+      PHP_XDEBUG_ENABLED: 1
+      XDEBUG_SESSION: "PHPSTORM"
+      PHP_IDE_CONFIG: serverName=ahu.vm
 #######################################
 # Storage
 #######################################
